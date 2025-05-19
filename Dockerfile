@@ -20,4 +20,4 @@ ENV HACKOPTIONS="name:guest"
 USER nethack
 WORKDIR /home/nethack
 
-CMD ["ttyd", "--port", "8080", "--once", "/usr/games/nethack"]
+CMD ["ttyd", "--port", "8080", "/usr/games/nethack"]
