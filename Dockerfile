@@ -7,17 +7,17 @@ RUN apt update && \
     apt install -y ttyd nethack-console && \
     useradd -m nethack
 
-# Prepare a writable copy of NetHack files
+# Prepare writable scoreboard path
 RUN mkdir -p /home/nethack/hackdir && \
     cp -a /var/games/nethack/* /home/nethack/hackdir/ && \
-    chown -R nethack:nethack /home/nethack/hackdir
+    chown -R nethack:nethack /home/nethack/hackdir && \
+    ln -sf /home/nethack/hackdir/record /var/games/nethack/record
 
-# Set the HACKDIR explicitly
+# Set HACKDIR and run from a valid binary
 ENV HACKDIR=/home/nethack/hackdir
 ENV HACKOPTIONS="name:guest"
 
 USER nethack
-WORKDIR /home/nethack/hackdir
+WORKDIR /home/nethack
 
-# Run from inside the writable hackdir
-CMD ["ttyd", "--port", "8080", "--once", "./nethack"]
+CMD ["ttyd", "--port", "8080", "--once", "/usr/games/nethack"]
